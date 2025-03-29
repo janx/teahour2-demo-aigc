@@ -1,0 +1,1003 @@
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teahour 2.0 - 前沿技术播客</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Noto+Sans+SC:wght@300;400;700&family=VT323&family=Press+Start+2P&display=swap');
+        
+        :root {
+            --matcha-light: #D6E9C6;
+            --matcha-mid: #8BC34A;
+            --matcha-dark: #4CAF50;
+            --pink-neon: #FF00FF;
+            --blue-neon: #00FFFF;
+            --purple-soft: #C89BFF;
+            --grid-color: rgba(76, 175, 80, 0.5);
+        }
+        
+        /* Hero Image Styles */
+        .hero-image {
+            position: relative;
+            width: 100%;
+            height: 700px;
+            overflow: hidden;
+            margin-bottom: 2rem;
+        }
+        
+        .hero-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: 0px -30px;
+            filter: hue-rotate(-10deg) saturate(1.5) contrast(1.2);
+        }
+        
+        .hero-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(76, 175, 80, 0.6) 0%, rgba(255, 0, 255, 0.3) 100%);
+            mix-blend-mode: hard-light;
+            z-index: 1;
+        }
+        
+        .hero-image::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: repeating-linear-gradient(
+                to bottom,
+                rgba(0, 0, 0, 0.1),
+                rgba(0, 0, 0, 0.1) 2px,
+                transparent 2px,
+                transparent 4px
+            );
+            pointer-events: none;
+            z-index: 2;
+            opacity: 0.3;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Noto Sans SC', 'Space Mono', monospace, sans-serif;
+            background-color: var(--matcha-light);
+            color: #333;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        
+        .grid-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(var(--grid-color) 1px, transparent 1px),
+                linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
+            background-size: 40px 40px;
+            z-index: -1;
+            perspective: 1000px;
+            transform-style: preserve-3d;
+            animation: gridMove 20s infinite linear;
+        }
+        
+        @keyframes gridMove {
+            0% {
+                background-position: 0 0;
+            }
+            100% {
+                background-position: 40px 40px;
+            }
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        header {
+            padding: 2rem 0;
+            text-align: center;
+            position: relative;
+            margin-top: -120px;
+            z-index: 2;
+        }
+        
+        .logo-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 2rem;
+            background-color: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(5px);
+            padding: 1.5rem;
+            border-radius: 0;
+            box-shadow: 
+                0 0 15px var(--blue-neon),
+                0 0 30px var(--pink-neon);
+            display: inline-flex;
+            border: 1px solid var(--pink-neon);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .logo-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(255, 255, 255, 0.2),
+                transparent
+            );
+            animation: shine 3s infinite;
+        }
+        
+        @keyframes shine {
+            0% { left: -100%; }
+            20% { left: 100%; }
+            100% { left: 100%; }
+        }
+        
+        .logo {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--matcha-dark);
+            text-shadow: 
+                3px 3px 0 var(--pink-neon), 
+                -3px -3px 0 var(--blue-neon),
+                0 0 10px var(--pink-neon),
+                0 0 20px var(--blue-neon);
+            letter-spacing: 2px;
+            animation: glitch 5s infinite alternate;
+        }
+        
+        @keyframes glitch {
+            0%, 85%, 100% {
+                transform: none;
+                opacity: 1;
+            }
+            86% {
+                transform: skew(5deg, -5deg) scale(1.05);
+                opacity: 0.8;
+            }
+            88% {
+                transform: skew(-5deg, 5deg) scale(0.95);
+                opacity: 0.8;
+            }
+            90% {
+                transform: skew(3deg, -3deg) scale(1.03);
+                opacity: 0.8;
+            }
+            92% {
+                transform: skew(-3deg, 3deg) scale(0.97);
+                opacity: 0.8;
+            }
+            94% {
+                transform: skew(1deg, -1deg) scale(1.01);
+                opacity: 0.9;
+            }
+        }
+        
+        .teacup {
+            font-size: 3rem;
+            margin: 0 1rem;
+            animation: float 3s ease-in-out infinite;
+            position: relative;
+        }
+        
+        .teacup::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--blue-neon);
+            filter: blur(10px);
+            opacity: 0.5;
+            z-index: -1;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.5; }
+            50% { transform: scale(1.5); opacity: 0.7; }
+        }
+        
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0) rotate(0deg);
+            }
+            25% {
+                transform: translateY(-10px) rotate(-5deg);
+            }
+            75% {
+                transform: translateY(-5px) rotate(5deg);
+            }
+        }
+        
+        .slogan {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            color: white;
+            max-width: 800px;
+            margin: 0 auto 2rem;
+            position: relative;
+            padding: 0.8rem 1.5rem;
+            background-color: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(5px);
+            border-radius: 0;
+            border-top: 2px solid var(--pink-neon);
+            border-bottom: 2px solid var(--blue-neon);
+            box-shadow: 
+                0 0 10px var(--pink-neon),
+                0 0 20px var(--blue-neon);
+            display: inline-block;
+            transform: skew(-5deg);
+        }
+        
+        .slogan strong {
+            color: var(--matcha-dark);
+            background: linear-gradient(45deg, var(--matcha-dark), var(--blue-neon));
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            text-shadow: 0 0 5px rgba(0, 255, 255, 0.5);
+            display: inline-block;
+            transform: skew(5deg);
+        }
+        
+        .intro {
+            background-color: rgba(0, 0, 0, 0.7);
+            border-radius: 0;
+            padding: 2rem;
+            margin-bottom: 3rem;
+            backdrop-filter: blur(5px);
+            border: 2px solid var(--matcha-mid);
+            box-shadow: 
+                5px 5px 0 var(--pink-neon),
+                -5px -5px 0 var(--blue-neon),
+                0 0 15px var(--pink-neon),
+                0 0 30px var(--blue-neon);
+            position: relative;
+            z-index: 1;
+            max-width: 800px;
+            margin: 0 auto 3rem;
+            clip-path: polygon(0 0, 100% 0, 95% 100%, 5% 100%);
+        }
+        
+        .intro p {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            text-align: justify;
+            color: white;
+            text-shadow: 0 0 5px var(--matcha-dark);
+        }
+        
+        .episodes {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+        
+        .episode-card {
+            background-color: rgba(0, 0, 0, 0.7);
+            border-radius: 0;
+            overflow: hidden;
+            transition: transform 0.3s, box-shadow 0.3s;
+            border: 2px solid var(--matcha-mid);
+            position: relative;
+            color: white;
+        }
+        
+        .episode-card:hover {
+            transform: translateY(-10px) scale(1.05);
+            box-shadow: 
+                0 10px 20px rgba(0, 0, 0, 0.1),
+                0 0 20px var(--pink-neon),
+                0 0 40px var(--blue-neon);
+        }
+        
+        .episode-card::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, var(--pink-neon), var(--blue-neon), var(--purple-soft), var(--matcha-dark));
+            z-index: -1;
+            opacity: 0;
+            transition: opacity 0.3s;
+            animation: border-glow 3s infinite linear;
+        }
+        
+        .episode-card:hover::before {
+            opacity: 1;
+        }
+        
+        @keyframes border-glow {
+            0% {
+                background-position: 0% 50%;
+                filter: hue-rotate(0deg);
+            }
+            50% {
+                background-position: 100% 50%;
+                filter: hue-rotate(90deg);
+            }
+            100% {
+                background-position: 0% 50%;
+                filter: hue-rotate(0deg);
+            }
+        }
+        
+        .episode-image {
+            height: 160px;
+            background-color: var(--matcha-mid);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .episode-image::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: repeating-linear-gradient(
+                to bottom,
+                rgba(0, 0, 0, 0.2),
+                rgba(0, 0, 0, 0.2) 2px,
+                transparent 2px,
+                transparent 4px
+            );
+            pointer-events: none;
+            z-index: 3;
+        }
+        
+        .episode-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+            filter: saturate(1.5) hue-rotate(-10deg);
+        }
+        
+        .episode-card:hover .episode-image img {
+            transform: scale(1.1);
+            filter: saturate(2) hue-rotate(0deg);
+        }
+        
+        .episode-content {
+            padding: 1.5rem;
+        }
+        
+        .episode-number {
+            font-size: 0.9rem;
+            color: var(--pink-neon);
+            margin-bottom: 0.5rem;
+            font-family: 'VT323', monospace;
+            letter-spacing: 1px;
+        }
+        
+        .episode-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: white;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-shadow: 0 0 5px var(--blue-neon);
+        }
+        
+        .episode-desc {
+            font-size: 0.95rem;
+            margin-bottom: 1rem;
+            color: rgba(255, 255, 255, 0.8);
+        }
+        
+        .episode-meta {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.9rem;
+            color: var(--matcha-mid);
+            font-family: 'VT323', monospace;
+            letter-spacing: 1px;
+        }
+        
+        .listen-btn {
+            display: inline-block;
+            margin-top: 1rem;
+            padding: 0.5rem 1.25rem;
+            background-color: var(--matcha-dark);
+            color: white;
+            text-decoration: none;
+            border-radius: 0;
+            font-weight: 600;
+            transition: all 0.3s;
+            border: 1px solid var(--blue-neon);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-size: 0.85rem;
+        }
+        
+        .listen-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(255, 255, 255, 0.3),
+                transparent
+            );
+            transition: all 0.3s;
+        }
+        
+        .listen-btn:hover {
+            background-color: var(--pink-neon);
+            transform: translateY(-3px);
+            box-shadow: 
+                0 5px 10px rgba(0, 0, 0, 0.3),
+                0 0 10px var(--pink-neon);
+        }
+        
+        .listen-btn:hover::before {
+            left: 100%;
+        }
+        
+        .subscribe-section {
+            background: linear-gradient(135deg, var(--matcha-mid) 0%, var(--matcha-dark) 100%);
+            padding: 3rem 0;
+            text-align: center;
+            margin-bottom: 3rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .subscribe-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: repeating-linear-gradient(
+                -45deg,
+                transparent,
+                transparent 10px,
+                rgba(255, 255, 255, 0.05) 10px,
+                rgba(255, 255, 255, 0.05) 20px
+            );
+            z-index: 0;
+        }
+        
+        .subscribe-content {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .subscribe-title {
+            color: white;
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            text-shadow: 2px 2px 0 var(--pink-neon);
+        }
+        
+        .subscribe-platforms {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+        
+        .platform-btn {
+            display: flex;
+            align-items: center;
+            background-color: white;
+            color: var(--matcha-dark);
+            padding: 0.75rem 1.5rem;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .platform-btn svg {
+            margin-right: 0.5rem;
+        }
+        
+        .platform-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        footer {
+            padding: 3rem 0;
+            text-align: center;
+            position: relative;
+            background-color: rgba(0, 0, 0, 0.8);
+            color: white;
+        }
+        
+        .footer-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            z-index: 2;
+        }
+        
+        footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                linear-gradient(180deg, var(--matcha-dark) 0%, transparent 100%),
+                repeating-linear-gradient(
+                    -45deg,
+                    transparent,
+                    transparent 10px,
+                    rgba(76, 175, 80, 0.05) 10px,
+                    rgba(76, 175, 80, 0.05) 20px
+                );
+            z-index: 1;
+            opacity: 0.3;
+        }
+        
+        .footer-logo {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--matcha-dark);
+            margin-bottom: 1rem;
+            font-family: 'Press Start 2P', cursive;
+            text-shadow: 
+                2px 2px 0 var(--pink-neon),
+                0 0 10px var(--pink-neon);
+        }
+        
+        .footer-links {
+            display: flex;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .footer-link {
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s;
+            position: relative;
+            padding: 0.3rem 0;
+        }
+        
+        .footer-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--pink-neon), var(--blue-neon));
+            transition: all 0.3s;
+        }
+        
+        .footer-link:hover {
+            color: var(--matcha-dark);
+            text-shadow: 0 0 5px var(--blue-neon);
+        }
+        
+        .footer-link:hover::after {
+            width: 100%;
+        }
+        
+        .footer-socials {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        
+        .social-icon {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: var(--matcha-dark);
+            color: white;
+            border-radius: 50%;
+            text-decoration: none;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .social-icon::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--pink-neon), var(--blue-neon));
+            opacity: 0;
+            transition: all 0.3s;
+            z-index: -1;
+        }
+        
+        .social-icon:hover {
+            transform: translateY(-5px) rotate(360deg);
+            box-shadow: 0 0 15px var(--pink-neon);
+        }
+        
+        .social-icon:hover::before {
+            opacity: 1;
+        }
+        
+        .copyright {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.9rem;
+            font-family: 'VT323', monospace;
+            letter-spacing: 1px;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 2.5rem;
+            position: relative;
+            font-size: 2.5rem;
+            color: white;
+            font-weight: 700;
+            text-shadow: 
+                3px 3px 0 var(--pink-neon),
+                -3px -3px 0 var(--blue-neon),
+                0 0 15px var(--pink-neon);
+            font-family: 'Press Start 2P', cursive;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+        
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--pink-neon), var(--blue-neon));
+            margin: 0.5rem auto 0;
+            border-radius: 0;
+            box-shadow: 0 0 10px var(--pink-neon);
+        }
+        
+        .section-title::before {
+            content: '';
+            position: absolute;
+            width: 30%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--pink-neon), transparent);
+            top: 50%;
+            left: 0;
+            z-index: -1;
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            width: 30%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--blue-neon), transparent);
+            top: 50%;
+            right: 0;
+            z-index: -1;
+        }
+        
+        .glitch-effect {
+            position: relative;
+        }
+        
+        .glitch-effect::before,
+        .glitch-effect::after {
+            content: attr(data-text);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.8;
+        }
+        
+        .glitch-effect::before {
+            color: var(--pink-neon);
+            z-index: -1;
+            animation: glitch-anim-1 2s infinite linear alternate-reverse;
+        }
+        
+        .glitch-effect::after {
+            color: var(--blue-neon);
+            z-index: -2;
+            animation: glitch-anim-2 3s infinite linear alternate-reverse;
+        }
+        
+        @keyframes glitch-anim-1 {
+            0%, 100% { 
+                transform: none;
+                opacity: 0.8;
+            }
+            50% { 
+                transform: translate(-5px, 5px) scale(1.1);
+                opacity: 0.5;
+            }
+        }
+        
+        @keyframes glitch-anim-2 {
+            0%, 100% { 
+                transform: none;
+                opacity: 0.8;
+            }
+            50% { 
+                transform: translate(5px, -5px) scale(0.9);
+                opacity: 0.5;
+            }
+        }
+        
+        /* Remove unused wavy line styles */
+        
+        @media (max-width: 768px) {
+            .logo {
+                font-size: 3rem;
+            }
+            
+            .slogan {
+                font-size: 1.25rem;
+            }
+            
+            .subscribe-platforms {
+                flex-direction: column;
+                align-items: center;
+                gap: 1rem;
+            }
+            
+            .footer-links {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            header {
+                margin-top: -70px;
+            }
+            
+            .logo-container {
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="grid-background"></div>
+    
+    <div class="hero-image">
+        <img src="vaporwave-teachat.png" alt="Teahour 2.0 Hero Image">
+        <div class="hero-overlay"></div>
+    </div>
+
+    <header>
+        <div class="container">
+            <div class="logo-container">
+                <div class="logo">TEAHOUR</div>
+                <div class="teacup">🍵</div>
+                <div class="logo">2.0</div>
+            </div>
+            <div class="slogan">
+                <strong>程序是一种媒介，是开发者思想、创造力的延伸</strong>
+            </div>
+        </div>
+    </header>
+    
+    <main>
+        <section class="intro-section">
+            <div class="container">
+                <div class="intro">
+                    <p>Teahour 2.0 是一档针对程序员播客节目，更是一场思维的探索。程序不仅仅是工具，它是开发者表达思想、塑造未来的媒介。我们相信，黑客精神不仅关乎技术，还关乎突破边界、打破规则、重新定义世界。</p>
+                </div>
+            </div>
+        </section>
+        
+        <section class="latest-episodes">
+            <div class="container">
+                <h2 class="section-title">最新节目</h2>
+                
+                <div class="episodes">
+                    <div class="episode-card">
+                        <div class="episode-image">
+                            <img src="/api/placeholder/300/160" alt="Episode thumbnail">
+                        </div>
+                        <div class="episode-content">
+                            <div class="episode-number">EP.42</div>
+                            <h3 class="episode-title">量子计算：下一代编程范式</h3>
+                            <p class="episode-desc">探讨量子计算将如何改变我们的编程思维和方法论。</p>
+                            <div class="episode-meta">
+                                <span>57分钟</span>
+                                <span>2025-03-15</span>
+                            </div>
+                            <button class="listen-btn">收听</button>
+                        </div>
+                    </div>
+                    
+                    <div class="episode-card">
+                        <div class="episode-image">
+                            <img src="/api/placeholder/300/160" alt="Episode thumbnail">
+                        </div>
+                        <div class="episode-content">
+                            <div class="episode-number">EP.41</div>
+                            <h3 class="episode-title">生成式AI与创意编程</h3>
+                            <p class="episode-desc">如何利用AI作为创造力的催化剂，而非替代品。</p>
+                            <div class="episode-meta">
+                                <span>63分钟</span>
+                                <span>2025-03-01</span>
+                            </div>
+                            <button class="listen-btn">收听</button>
+                        </div>
+                    </div>
+                    
+                    <div class="episode-card">
+                        <div class="episode-image">
+                            <img src="/api/placeholder/300/160" alt="Episode thumbnail">
+                        </div>
+                        <div class="episode-content">
+                            <div class="episode-number">EP.40</div>
+                            <h3 class="episode-title">函数式编程的美学</h3>
+                            <p class="episode-desc">为何函数式编程不仅是技术选择，更是思维方式的革命。</p>
+                            <div class="episode-meta">
+                                <span>52分钟</span>
+                                <span>2025-02-15</span>
+                            </div>
+                            <button class="listen-btn">收听</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section class="subscribe-section">
+            <div class="container">
+                <div class="subscribe-content">
+                    <h2 class="subscribe-title">订阅我们</h2>
+                    <div class="subscribe-platforms">
+                        <a href="#" class="platform-btn">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12 2C6.486 2 2 6.486 2 12C2 17.514 6.486 22 12 22C17.514 22 22 17.514 22 12C22 6.486 17.514 2 12 2ZM16.5 12C16.5 12.828 15.828 13.5 15 13.5C14.172 13.5 13.5 12.828 13.5 12C13.5 11.172 14.172 10.5 15 10.5C15.828 10.5 16.5 11.172 16.5 12ZM12 16.5C11.172 16.5 10.5 15.828 10.5 15C10.5 14.172 11.172 13.5 12 13.5C12.828 13.5 13.5 14.172 13.5 15C13.5 15.828 12.828 16.5 12 16.5ZM9 13.5C8.172 13.5 7.5 12.828 7.5 12C7.5 11.172 8.172 10.5 9 10.5C9.828 10.5 10.5 11.172 10.5 12C10.5 12.828 9.828 13.5 9 13.5Z" fill="#4CAF50"/>
+                            </svg>
+                            Apple Podcasts
+                        </a>
+                        <a href="#" class="platform-btn">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12 2C6.486 2 2 6.486 2 12C2 17.514 6.486 22 12 22C17.514 22 22 17.514 22 12C22 6.486 17.514 2 12 2ZM16.5 12C16.5 12.828 15.828 13.5 15 13.5C14.172 13.5 13.5 12.828 13.5 12C13.5 11.172 14.172 10.5 15 10.5C15.828 10.5 16.5 11.172 16.5 12ZM12 16.5C11.172 16.5 10.5 15.828 10.5 15C10.5 14.172 11.172 13.5 12 13.5C12.828 13.5 13.5 14.172 13.5 15C13.5 15.828 12.828 16.5 12 16.5Z" fill="#4CAF50"/>
+                            </svg>
+                            Spotify
+                        </a>
+                        <a href="#" class="platform-btn">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12 2C6.486 2 2 6.486 2 12C2 17.514 6.486 22 12 22C17.514 22 22 17.514 22 12C22 6.486 17.514 2 12 2ZM16.5 12C16.5 12.828 15.828 13.5 15 13.5C14.172 13.5 13.5 12.828 13.5 12C13.5 11.172 14.172 10.5 15 10.5C15.828 10.5 16.5 11.172 16.5 12Z" fill="#4CAF50"/>
+                            </svg>
+                            小宇宙
+                        </a>
+                        <a href="#" class="platform-btn">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12 2C6.486 2 2 6.486 2 12C2 17.514 6.486 22 12 22C17.514 22 22 17.514 22 12C22 6.486 17.514 2 12 2Z" fill="#4CAF50"/>
+                            </svg>
+                            喜马拉雅
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section class="topics-section">
+            <div class="container">
+                <h2 class="section-title">探索话题</h2>
+                
+                <div class="episodes">
+                    <div class="episode-card">
+                        <div class="episode-image">
+                            <img src="/api/placeholder/300/160" alt="Topic thumbnail">
+                        </div>
+                        <div class="episode-content">
+                            <h3 class="episode-title">前端创新</h3>
+                            <p class="episode-desc">从交互设计到性能优化，探索Web前端的未来发展方向。</p>
+                            <button class="listen-btn">查看相关节目</button>
+                        </div>
+                    </div>
+                    
+                    <div class="episode-card">
+                        <div class="episode-image">
+                            <img src="/api/placeholder/300/160" alt="Topic thumbnail">
+                        </div>
+                        <div class="episode-content">
+                            <h3 class="episode-title">人工智能</h3>
+                            <p class="episode-desc">AI如何重塑软件开发，以及程序员在AI时代的角色转变。</p>
+                            <button class="listen-btn">查看相关节目</button>
+                        </div>
+                    </div>
+                    
+                    <div class="episode-card">
+                        <div class="episode-image">
+                            <img src="/api/placeholder/300/160" alt="Topic thumbnail">
+                        </div>
+                        <div class="episode-content">
+                            <h3 class="episode-title">创业与开源</h3>
+                            <p class="episode-desc">开源项目如何演变为成功的商业模式，以及开发者创业故事。</p>
+                            <button class="listen-btn">查看相关节目</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">TEAHOUR 2.0</div>
+                
+                <div class="footer-links">
+                    <a href="#" class="footer-link">关于我们</a>
+                    <a href="#" class="footer-link">所有节目</a>
+                    <a href="#" class="footer-link">嘉宾申请</a>
+                    <a href="#" class="footer-link">赞助合作</a>
+                    <a href="#" class="footer-link">联系我们</a>
+                </div>
+                
+                <div class="footer-socials">
+                    <a href="#" class="social-icon">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M22 5.92C21.5 6.21 21 6.5 20.5 6.58C21.1 6.21 21.5 5.61 21.7 4.92C21.2 5.26 20.6 5.5 20 5.61C19.5 5 18.8 4.66 18 4.66C16.4 4.66 15.1 5.92 15.1 7.5C15.1 7.78 15.1 8.05 15.2 8.31C12.7 8.13 10.5 7.02 9 5.31C8.7 5.82 8.5 6.5 8.5 7.14C8.5 8.38 9.1 9.47 10.1 10.08C9.6 10.08 9.1 9.92 8.7 9.7V9.76C8.7 11.18 9.7 12.38 11 12.66C10.8 12.72 10.5 12.79 10.2 12.79C10 12.79 9.8 12.79 9.6 12.72C10 13.9 11.1 14.7 12.3 14.7C11.3 15.47 10 15.92 8.6 15.92C8.3 15.92 8.1 15.92 7.8 15.85C9 16.7 10.4 17.15 11.9 17.15C18 17.15 21.3 12.31 21.3 8.13L21.3 7.76C21.8 7.3 22.2 6.7 22 5.92Z" fill="white"/>
+                        </svg>
+                    </a>
+                    <a href="#" class="social-icon">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 2C6.477 2 2 6.477 2 12C2 17.523 6.477 22 12 22C17.523 22 22 17.523 22 12C22 6.477 17.523 2 12 2ZM8.81 17.6C6.977 16.612 5.8 14.441 5.8 12C5.8 9.559 6.977 7.388 8.81 6.4C10.643 5.412 12.914 5.412 14.748 6.4C16.581 7.388 17.758 9.559 17.758 12C17.758 14.441 16.581 16.612 14.748 17.6C12.914 18.588 10.643 18.588 8.81 17.6ZM10.819 8.4C9.685 9.02 8.95 10.436 8.95 12C8.95 13.564 9.685 14.98 10.819 15.6C11.953 16.22 13.356 16.22 14.491 15.6C15.625 14.98 16.36 13.564 16.36 12C16.36 10.436 15.625 9.02 14.491 8.4C13.356 7.78 11.953 7.78 10.819 8.4Z" fill="white"/>
+                        </svg>
+                    </a>
+                    <a href="#" class="social-icon">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M22 12.0002C22 6.48024 17.52 2.00024 12 2.00024C6.48 2.00024 2 6.48024 2 12.0002C2 16.8402 5.44 20.8702 10 21.8002V15.0002H8V12.0002H10V9.50024C10 7.57024 11.57 6.00024 13.5 6.00024H16V9.00024H14C13.45 9.00024 13 9.45024 13 10.0002V12.0002H16V15.0002H13V21.9502C18.05 21.4502 22 17.1902 22 12.0002Z" fill="white"/>
+                        </svg>
+                    </a>
+                    <a href="#" class="social-icon">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M7.8 2H16.2C19.4 2 22 4.6 22 7.8V16.2C22 19.4 19.4 22 16.2 22H7.8C4.6 22 2 19.4 2 16.2V7.8C2 4.6 4.6 2 7.8 2ZM16.2 4H7.8C5.7 4 4 5.7 4 7.8V16.2C4 18.3 5.7 20 7.8 20H16.2C18.3 20 20 18.3 20 16.2V7.8C20 5.7 18.3 4 16.2 4ZM12 7.5C14.5 7.5 16.5 9.5 16.5 12C16.5 14.5 14.5 16.5 12 16.5C9.5 16.5 7.5 14.5 7.5 12C7.5 9.5 9.5 7.5 12 7.5ZM12 9.5C10.6 9.5 9.5 10.6 9.5 12C9.5 13.4 10.6 14.5 12 14.5C13.4 14.5 14.5 13.4 14.5 12C14.5 10.6 13.4 9.5 12 9.5Z" fill="white"/>
+                        </svg>
+                    </a>
